@@ -548,15 +548,45 @@ window.addEventListener('scroll', () => {
 
 document.getElementById('toTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// ---------- Contact form (opens the email app) ----------
+ // ---------- Contact form (opens WhatsApp) ----------
 document.getElementById('contactForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const message = document.getElementById('message').value.trim();
-  const subject = encodeURIComponent('Portfolio contact from ' + name);
-  const body = encodeURIComponent(message + '\n\nFrom: ' + name + ' (' + email + ')');
-  window.location.href = 'mailto:amareschowdary23@gmail.com?subject=' + subject + '&body=' + body;
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    // Basic validation
+    if (name.length < 2) {
+        alert('Please enter your name (at least 2 characters).');
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    if (message.length < 20) {
+        alert('Please enter a message with at least 20 characters.');
+        return;
+    }
+
+    // WhatsApp number: country code + phone number
+    const phoneNumber = "917396016249";
+
+    const whatsappMessage = `*New Contact Form Submission*
+
+*Name:* ${name}
+*Email:* ${email}
+*Message:* ${message}`;
+
+    const whatsappUrl =
+        `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+    window.open(whatsappUrl, '_blank');
+
+    document.getElementById('contactForm').reset();
 });
 
 // ---------- Footer year ----------
